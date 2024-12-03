@@ -25,6 +25,21 @@ class Solver {
         return value
     }
 
+    fun bothSolutions() : Pair<Int, Int> {
+        var second = 0
+        firstIDList.forEach {
+            second += it * secondIDList.indicesOf(it).size
+        }
+        var first = 0
+        while (firstIDList.minBy { it } != Int.MAX_VALUE) {
+            first += abs(firstIDList.minBy { it } - secondIDList.minBy { it })
+            firstIDList.set(firstIDList.indexOf(firstIDList.minBy { it }), Int.MAX_VALUE)
+            secondIDList.set(secondIDList.indexOf(secondIDList.minBy { it }), Int.MAX_VALUE)
+        }
+        return Pair(first, second)
+    }
+
+
     fun readFileLineByLine(fileName : String) = File(fileName).forEachLine {
         firstIDList.add(Integer.parseInt(it.substringBefore(" ")))
         secondIDList.add(Integer.parseInt(it.substringAfterLast(" ")))
